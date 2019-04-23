@@ -15,4 +15,7 @@ slo = tlo - flo # 0.31
 df['x'] = df['location'].apply(lambda l: (Point(l).latitude - fla) / sla)
 df['y'] = df['location'].apply(lambda l: (Point(l).longitude - flo) / slo)
 
+df['type'] = df['type'].apply(lambda s: s[len('Type.'):])
+df['size'] = df['size'].apply(lambda s: s[len('Size.'):])
+
 df.to_csv("../caches.csv")
