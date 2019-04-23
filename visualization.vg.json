@@ -1,0 +1,43 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
+  "data": {"url": "https://people.sc.fsu.edu/~jburkardt/data/csv/faithful.csv"},
+  "transform": [{"filter": "datum.location === 'Seattle'"}],
+  "vconcat": [
+    {
+      "hconcat": [
+        {
+          "mark": "bar",
+          "encoding": {
+            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+            "y": {
+              "aggregate": "mean",
+              "field": "precipitation",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "vconcat": [
+            {
+              "mark": "point",
+              "encoding": {
+                "x": {"field": "temp_min", "type": "quantitative", "bin": true},
+                "y": {"field": "temp_max", "type": "quantitative", "bin": true},
+                "size": {"aggregate": "count", "type": "quantitative"}
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mark": "square",
+      "encoding": {
+        "y": {"field": "Origin", "type": "ordinal"},
+        "x": {"field": "Cylinders", "type": "ordinal"},
+        "size": {"field": "Origin", "type": "ordinal"}
+      }
+    }
+  ]
+}
