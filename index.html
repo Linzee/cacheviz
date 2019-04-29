@@ -1,31 +1,22 @@
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega@5/build/vega-core.min.js"></script>
+  <title>GeoViz</title>
 </head>
 <body>
-  <div id="view"></div>
-  <script type="text/javascript">
-    var view;
-
-    fetch('visualization.vl.json')
-      .then(res => res.json())
-      .then(spec => render(spec))
-      .catch(err => console.error(err));
-
-    function render(spec) {
-      view = new vega.View(vega.parse(spec), {
-        renderer: 'svg',
-        container: '#view',
-        hover: true
-      });
-      return view.runAsync();
-    }
-  </script>
-  <style>
-    #view {
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+  <div id="view">
+    <div id="container_left">
+      <svg id="map"></svg>
+      <svg id="timeline"></svg>
+    </div>
+    <div id="container_right">
+      <svg id="hist_type"></svg>
+      <svg id="hist_size"></svg>
+      <svg id="hist_difficulty"></svg>
+      <svg id="hist_terrain"></svg>
+    </div>
+  </div>
+  <script src="lib/d3.js"></script>
+  <script src="lib/d3-fetch.js"></script>
+  <script src="lib/data-forge.js"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="app.css">
 </body>
