@@ -16,11 +16,13 @@
               "encoding": {
                 "y": {
                   "field": "Origin",
-                  "type": "ordinal"
+                  "type": "quantitative",
+                  "scale": {"domain": [0.0,1.0]}
                 },
                 "x": {
                   "field": "Cylinders",
-                  "type": "ordinal"
+                  "type": "quantitative",
+                  "scale": {"domain": [0.0,1.0]}
                 },
                 "size": {
                   "field": "Origin",
@@ -29,26 +31,53 @@
               }
             },
             {
+              "transform": [
+                {"filter": {"selection": "type"}}
+              ],
+              "selection": {
+                "cache": {
+                  "type": "multi",
+                  "resolve": "global"
+                }
+              },
               "mark": "point",
               "encoding": {
                 "x": {
                   "field": "x",
-                  "type": "quantitative"
+                  "type": "quantitative",
+                  "scale": {"domain": [0.0,1.0]}
                 },
                 "y": {
                   "field": "y",
-                  "type": "quantitative"
+                  "type": "quantitative",
+                  "scale": {"domain": [0.0,1.0]}
+                },
+                "color": {
+                  "condition": {
+                    "selection": "cache",
+                    "value": "yellow"
+                  },
+                  "value": "gray"
                 }
               }
             }
           ]
         },
         {
+          "transform": [
+            {"filter": {"selection": "cache"}}
+          ],
           "vconcat": [
             {
               "width": 300,
               "height": 100,
               "mark": "bar",
+              "selection": {
+                "type": {
+                  "type": "multi",
+                  "resolve": "global"
+                }
+              },
               "encoding": {
                 "x": {
                   "field": "type",
