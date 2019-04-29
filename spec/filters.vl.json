@@ -23,6 +23,12 @@
         "y": {
           "aggregate": "count",
           "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "selection": "terrain"
+          },
+          "value": "magenta"
         }
       }
     },
@@ -30,6 +36,12 @@
       "width": 300,
       "height": 100,
       "mark": "bar",
+      "selection": {
+        "size": {
+          "type": "multi",
+          "resolve": "global"
+        }
+      },
       "encoding": {
         "x": {
           "field": "size",
@@ -47,6 +59,12 @@
         "y": {
           "aggregate": "count",
           "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "selection": "size"
+          },
+          "value": "magenta"
         }
       }
     },
@@ -54,6 +72,12 @@
       "width": 300,
       "height": 100,
       "mark": "bar",
+      "selection": {
+        "difficulty": {
+          "type": "multi",
+          "resolve": "global"
+        }
+      },
       "encoding": {
         "x": {
           "field": "difficulty",
@@ -62,6 +86,12 @@
         "y": {
           "aggregate": "count",
           "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "selection": "terrain"
+          },
+          "value": "magenta"
         }
       }
     },
@@ -69,6 +99,12 @@
       "width": 300,
       "height": 100,
       "mark": "bar",
+      "selection": {
+        "terrain": {
+          "type": "multi",
+          "resolve": "global"
+        }
+      },
       "encoding": {
         "x": {
           "field": "terrain",
@@ -77,6 +113,12 @@
         "y": {
           "aggregate": "count",
           "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "selection": "terrain"
+          },
+          "value": "magenta"
         }
       }
     }

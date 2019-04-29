@@ -8,7 +8,7 @@
   "height": 800,
   "selection": {
     "cache": {
-      "type": "multi"
+      "type": "interval"
     }
   },
   "mark": "point",
