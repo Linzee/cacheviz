@@ -3,11 +3,25 @@
   <title>CacheViz</title>
 </head>
 <body>
-  <div id="view"></div>
+  <div id="view">
+    <div id="container_left">
+      <div id="map"></div>
+      <div id="timeline"></div>
+    </div>
+    <div id="container_right">
+      <div id="hist_type"></div>
+      <div id="hist_size"></div>
+      <div id="hist_difficulty"></div>
+      <div id="hist_terrain"></div>
+    </div>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5/build/vega-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@3"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/data-forge@1.6.9/dist/web/index.js"></script>
   <script src="app.js"></script>
   <link rel="stylesheet" href="app.css">
 </body>

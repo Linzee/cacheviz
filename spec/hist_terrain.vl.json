@@ -1,0 +1,26 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "CacheViz terrain histogram",
+  "data": {
+    "values": []
+  },
+  "width": 300,
+  "height": 100,
+  "mark": "bar",
+  "selection": {
+    "terrain": {
+      "type": "multi",
+      "resolve": "global"
+    }
+  },
+  "encoding": {
+    "x": {
+      "field": "terrain",
+      "type": "ordinal"
+    },
+    "y": {
+      "aggregate": "count",
+      "type": "quantitative"
+    }
+  }
+}

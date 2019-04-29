@@ -1,0 +1,22 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "CacheViz timeline",
+  "data": {
+    "values": []
+  },
+  "mark": "square",
+  "encoding": {
+    "y": {
+      "field": "Origin",
+      "type": "ordinal"
+    },
+    "x": {
+      "field": "Cylinders",
+      "type": "ordinal"
+    },
+    "size": {
+      "field": "Origin",
+      "type": "ordinal"
+    }
+  }
+}

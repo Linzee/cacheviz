@@ -1,0 +1,84 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "CacheViz filters",
+  "data": {
+    "values": []
+  },
+  "vconcat": [
+    {
+      "width": 300,
+      "height": 100,
+      "mark": "bar",
+      "selection": {
+        "type": {
+          "type": "multi",
+          "resolve": "global"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "type",
+          "type": "ordinal"
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "width": 300,
+      "height": 100,
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "size",
+          "type": "ordinal",
+          "sort": [
+            "micro",
+            "small",
+            "regular",
+            "large",
+            "virtual",
+            "other",
+            "not_chosen"
+          ]
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "width": 300,
+      "height": 100,
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "difficulty",
+          "type": "ordinal"
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "width": 300,
+      "height": 100,
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "terrain",
+          "type": "ordinal"
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}
