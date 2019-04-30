@@ -2,4 +2,3 @@ venv
 .gc_credentials
 logs
 extracted_caches.csv
-

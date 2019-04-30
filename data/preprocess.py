@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from geopy.point import Point
 import glob
+import datetime
 
 # CACHES
 
@@ -33,4 +34,10 @@ for path in glob.glob("logs/*.csv"):
     df['wp'] = path[len("logs/"):-len(".csv")]
     logs = logs.append(df, ignore_index=True)
 
-logs.to_csv("../caches_logs.csv", index=False)
+logs.to_csv("extracted_logs.csv", index=False)
+
+logs['date'] = logs['date'].apply(lambda d: str(datetime.datetime.strptime(d, "%Y-%m-%d").year)+"-"+str(datetime.datetime.strptime(d, "%Y-%m-%d").month)+"-01")
+
+logsGrouped = logs.groupby(['wp', 'date'])['wp'].count().rename(columns={'wp': 'count'}).reset_index()
+
+logsGrouped.to_csv("../caches_logs.csv", index=False)
