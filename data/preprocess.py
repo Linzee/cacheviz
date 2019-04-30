@@ -38,6 +38,6 @@ logs.to_csv("extracted_logs.csv", index=False)
 
 logs['date'] = logs['date'].apply(lambda d: str(datetime.datetime.strptime(d, "%Y-%m-%d").year)+"-"+str(datetime.datetime.strptime(d, "%Y-%m-%d").month)+"-01")
 
-logsGrouped = logs.groupby(['wp', 'date'])['wp'].count().rename(columns={'wp': 'count'}).reset_index()
+logsGrouped = logs.groupby(['wp', 'date', 'type'])['wp'].count().rename(columns={'wp': 'count'}).reset_index().rename(columns={0: 'count'})
 
 logsGrouped.to_csv("../caches_logs.csv", index=False)

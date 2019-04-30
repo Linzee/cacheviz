@@ -6,6 +6,12 @@
   },
   "width": 900,
   "height": 120,
+  "selection": {
+    "range": {
+      "type": "interval",
+      "encodings": ["x"]
+    }
+  },
   "mark": "area",
   "encoding": {
     "x": {

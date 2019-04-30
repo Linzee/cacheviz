@@ -6,6 +6,8 @@ var filter_type = [];
 var filter_size = [];
 var filter_difficulty = [];
 var filter_terrain = [];
+var filter_caches = [];
+var filter_time_interval = [];
 
 var view_map;
 var view_timeline;
@@ -53,7 +55,7 @@ var updateDataCachces = function() {
   logs_value = logs.groupBy(row => row.wp).select(group => {
     return {
       wp: group.first().wp,
-      value: group.count(),
+      value: group.deflate(row => row.count).sum(),
     };
   }).inflate();
 
@@ -66,6 +68,12 @@ var updateDataCachces = function() {
     }
   );
 
+  caches_unselected = caches;
+  if(filter_caches.length) {
+    caches = caches.where(row => filter_caches.includes(row.wp))
+  }
+
+  caches_unselected_arr = caches_unselected.toArray();
   caches_arr = caches.toArray();
 
   updateDataView(view_map, 'source_0', caches_arr);
@@ -75,7 +83,16 @@ var updateDataCachces = function() {
 var updateDataLogs = function() {
   var logs = data_logs;
 
-  logs_timeline_arr = logs.toArray();
+  logs = logs.where(row => row.type == 'found_it');
+
+  logs_timeline = logs.groupBy(row => row.date).select(group => {
+    return {
+      date: group.first().date,
+      value: group.deflate(row => row.count).sum(),
+    };
+  }).inflate();
+
+  logs_timeline_arr = logs_timeline.toArray();
 
   updateDataView(view_timeline, 'source_0', logs_timeline_arr);
 }
@@ -88,13 +105,29 @@ init = Promise.all([
   new Promise((resolve, reject) => {
     vegaEmbed("#map", "spec/map.vl.json", {
       renderer: "svg",
-      actions: false
+      actions: false,
+      patch: (spec) => {
+        spec.signals.forEach(s => {
+          if(s.name == 'cache_tuple') {
+            s.on.forEach(o => {
+              if(o.events[0].type == 'click') {
+                o.update = o.update.replace("? {unit", "? {datum: datum, unit")
+              }
+            })
+          }
+        })
+        return spec
+      }
     }).then(function(result) {
       view_map = result.view;
 
-      view_map.addDataListener("cache_store", (e, a) => {
-        console.log(e, a)
-      })
+      // view_map.addDataListener("cache_store", (name, e) => {
+      //   filter_caches = [];
+      //   e.forEach(ei => {
+      //     filter_caches.push(ei.datum.wp);
+      //   });
+      //   updateDataCachces();
+      // });
 
       resolve();
     }).catch(reject);
@@ -182,18 +215,11 @@ init = Promise.all([
     }),
     d3.csv("caches_logs.csv").then((raw) => {
       return new Promise((resolve, reject) => {
-        raw_logs = new dataForge.DataFrame(raw)
+        data_logs = new dataForge.DataFrame(raw)
           .transformSeries({
             date: d => Date.parse(d),
+            count: c => parseInt(c)
           })
-
-        data_logs = raw_logs.groupBy(row => logDateGroup(row.date)).select(group => {
-          return {
-            date: group.first().date,
-            value: group.count(),
-          };
-        }).inflate();
-
         return resolve();
       });
     })

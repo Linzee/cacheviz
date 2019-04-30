@@ -8,7 +8,13 @@
   "height": 800,
   "selection": {
     "cache": {
-      "type": "multi"
+      "type": "interval"
+    },
+    "grid": {
+      "type": "interval",
+      "bind": "scales",
+      "zoom": "wheel![event.shiftKey]",
+      "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
     }
   },
   "mark": "point",
@@ -16,12 +22,14 @@
     "x": {
       "field": "x",
       "type": "quantitative",
-      "scale": {"domain": [0.0,1.0]}
+      "scale": {"domain": [0.0,1.0]},
+      "axis": null
     },
     "y": {
       "field": "y",
       "type": "quantitative",
-      "scale": {"domain": [0.0,1.0]}
+      "scale": {"domain": [0.0,1.0]},
+      "axis": null
     },
     "color": {
       "condition": {
