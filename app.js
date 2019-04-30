@@ -83,9 +83,23 @@ init = Promise.all([
     }).catch(reject);
   }),
   new Promise((resolve, reject) => {
-    vegaEmbed("#filters", "spec/filters.vg.json", {
+    vegaEmbed("#filters", "spec/filters.vl.json", {
       renderer: "svg",
-      actions: false
+      actions: false,
+      patch: (spec) => {
+        spec.marks.forEach(m => {
+          m.signals.forEach(s => {
+            if(s.name == 'type_tuple' || s.name == 'size_tuple' || s.name == 'difficulty_tuple' || s.name == 'terrain_tuple') {
+              s.on.forEach(o => {
+                if(o.events[0].type == 'click') {
+                  o.update = o.update.replace("? {unit", "? {datum: datum, unit")
+                }
+              })
+            }
+          })
+        })
+        return spec
+      }
     }).then(function(result) {
       view_filters = result.view;
 

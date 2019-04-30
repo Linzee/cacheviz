@@ -4,6 +4,8 @@
   "data": {
     "values": []
   },
+  "width": 400,
+  "height": 800,
   "vconcat": [
     {
       "width": 300,
