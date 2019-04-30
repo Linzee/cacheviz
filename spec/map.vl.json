@@ -26,7 +26,8 @@
     "color": {
       "condition": {
         "selection": "cache",
-        "value": "yellow"
+        "field": "value",
+        "type": "quantitative"
       },
       "value": "gray"
     }

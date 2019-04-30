@@ -1,3 +1,4 @@
+
 var data_caches;
 var data_logs;
 
@@ -30,27 +31,57 @@ var updateDataView = function(view, name, data) {
   view.runAsync();
 }
 
-var updateData = function() {
-  console.log("update data");
-
+var updateDataCachces = function() {
   var caches = data_caches;
+  var logs = data_logs;
+
   if(filter_type.length) {
-    caches = caches.where(row => filter_type.includes(row["type"]))
+    caches = caches.where(row => filter_type.includes(row.type))
   }
   if(filter_size.length) {
-    caches = caches.where(row => filter_size.includes(row["size"]))
+    caches = caches.where(row => filter_size.includes(row.size))
   }
   if(filter_difficulty.length) {
-    caches = caches.where(row => filter_difficulty.includes(row["difficulty"]))
+    caches = caches.where(row => filter_difficulty.includes(row.difficulty))
   }
   if(filter_terrain.length) {
-    caches = caches.where(row => filter_terrain.includes(row["terrain"]))
+    caches = caches.where(row => filter_terrain.includes(row.terrain))
   }
+
+  logs = logs.where(row => row.type == 'found_it')
+
+  logs_value = logs.groupBy(row => row.wp).select(group => {
+    return {
+      wp: group.first().wp,
+      value: group.count(),
+    };
+  }).inflate();
+
+  caches = caches.join(
+    logs_value,
+    leftRow => leftRow.wp,
+    rightRow => rightRow.wp,
+    (leftRow, rightRow) => {
+      return Object.assign({}, leftRow, rightRow);
+    }
+  );
 
   caches_arr = caches.toArray();
 
   updateDataView(view_map, 'source_0', caches_arr);
   updateDataView(view_filters, 'source_0', caches_arr);
+}
+
+var updateDataLogs = function() {
+  var logs = data_logs;
+
+  logs_timeline_arr = logs.toArray();
+
+  updateDataView(view_timeline, 'source_0', logs_timeline_arr);
+}
+
+var logDateGroup = function(date) {
+  return date.getFullYear()+"-"+(date.getMonth()+1)
 }
 
 init = Promise.all([
@@ -108,28 +139,28 @@ init = Promise.all([
         e.forEach(ei => {
           filter_type.push(ei.datum.type);
         });
-        updateData();
+        updateDataCachces();
       });
       view_filters.addDataListener("size_store", (name, e) => {
         filter_size = [];
         e.forEach(ei => {
           filter_size.push(ei.datum.size);
         });
-        updateData();
+        updateDataCachces();
       });
       view_filters.addDataListener("difficulty_store", (name, e) => {
         filter_difficulty = [];
         e.forEach(ei => {
           filter_difficulty.push(ei.datum.difficulty);
         });
-        updateData();
+        updateDataCachces();
       });
       view_filters.addDataListener("terrain_store", (name, e) => {
         filter_terrain = [];
         e.forEach(ei => {
           filter_terrain.push(ei.datum.terrain);
         });
-        updateData();
+        updateDataCachces();
       });
 
       resolve()
@@ -151,14 +182,25 @@ init = Promise.all([
     }),
     d3.csv("caches_logs.csv").then((raw) => {
       return new Promise((resolve, reject) => {
-        data_logs = new dataForge.DataFrame(raw)
+        raw_logs = new dataForge.DataFrame(raw)
           .transformSeries({
             date: d => Date.parse(d),
           })
+
+        data_logs = raw_logs.groupBy(row => logDateGroup(row.date)).select(group => {
+          return {
+            date: group.first().date,
+            value: group.count(),
+          };
+        }).inflate();
+
         return resolve();
       });
     })
   ])
 })
-.then(updateData)
+.then(() => {
+  updateDataCachces();
+  updateDataLogs();
+})
 .catch(console.error)
