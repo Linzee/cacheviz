@@ -248,5 +248,6 @@ init = Promise.all([
   updateDataMap();
   updateDataFilter();
   updateDataTimeline();
+  d3.select("#loading").style("display", "none");
 })
 .catch(console.error)

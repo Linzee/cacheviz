@@ -1,15 +1,17 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "name": "filters",
   "description": "CacheViz filters",
   "data": {
     "values": []
   },
   "width": 400,
   "height": 800,
+  "bounds": "full",
   "vconcat": [
     {
-      "width": 300,
-      "height": 100,
+      "width": 400,
+      "bounds": "full",
       "mark": "bar",
       "selection": {
         "type": {
@@ -35,8 +37,8 @@
       }
     },
     {
-      "width": 300,
-      "height": 100,
+      "width": 400,
+      "bounds": "full",
       "mark": "bar",
       "selection": {
         "size": {
@@ -71,8 +73,8 @@
       }
     },
     {
-      "width": 300,
-      "height": 100,
+      "width": 400,
+      "bounds": "full",
       "mark": "bar",
       "selection": {
         "difficulty": {
@@ -98,8 +100,8 @@
       }
     },
     {
-      "width": 300,
-      "height": 100,
+      "width": 400,
+      "bounds": "full",
       "mark": "bar",
       "selection": {
         "terrain": {

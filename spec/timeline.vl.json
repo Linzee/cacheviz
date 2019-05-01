@@ -1,11 +1,13 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "name": "timeline",
   "description": "CacheViz timeline",
   "data": {
     "values": []
   },
-  "width": 900,
-  "height": 120,
+  "width": 800,
+  "height": 100,
+  "bounds": "full",
   "selection": {
     "range": {
       "type": "interval",

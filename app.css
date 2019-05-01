@@ -59,12 +59,11 @@ table {
 }
 
 #view svg {
-	
+
 }
 
 #container_left {
-  flex: 1 0 auto;
-  width: 70%;
+  flex: 0 0 auto;
   display: flex;
   flex-flow: column nowrap;
 }
@@ -76,8 +75,26 @@ table {
 
 #container_right {
   flex: 1 1 auto;
-  width: 30%;
-  min-width: 300px;
   display: flex;
   flex-flow: column nowrap;
+}
+
+h1 {
+	font-size: 1.6rem;
+	margin: 0.2em;
+}
+
+.modal {
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.loading-box {
+	font-size: 1.6rem;
+	padding: 1.5em 3em;
+	background: white;
+	box-shadow: 0 0 60px white, 0 0 40px white;
 }

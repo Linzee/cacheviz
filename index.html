@@ -1,8 +1,10 @@
 <head>
   <meta charset="UTF-8">
   <title>CacheViz</title>
+  <link rel="stylesheet" href="app.css">
 </head>
 <body>
+  <h1>CacheViz</h1>
   <div id="view">
     <div id="container_left">
       <div id="map"></div>
@@ -10,6 +12,11 @@
     </div>
     <div id="container_right">
       <div id="filters"></div>
+    </div>
+  </div>
+  <div class="modal" id="loading">
+    <div class="loading-box">
+      Loading data
     </div>
   </div>
 
@@ -20,5 +27,4 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/data-forge@1.6.9/dist/web/index.js"></script>
   <script src="app.js"></script>
-  <link rel="stylesheet" href="app.css">
 </body>

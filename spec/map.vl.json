@@ -1,11 +1,13 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "name": "map",
   "description": "CacheViz map",
   "data": {
     "values": []
   },
   "width": 800,
   "height": 800,
+  "bounds": "full",
   "selection": {
     "cache": {
       "type": "multi"
@@ -26,13 +28,13 @@
     "x": {
       "field": "x",
       "type": "quantitative",
-      "scale": {"domain": [0.0,1.0]},
+      "scale": {"domain": [0.25,0.75]},
       "axis": null
     },
     "y": {
       "field": "y",
       "type": "quantitative",
-      "scale": {"domain": [0.0,1.0]},
+      "scale": {"domain": [0.25,0.75]},
       "axis": null
     },
     "color": {
@@ -48,5 +50,11 @@
       {"field": "wp", "type": "ordinal"},
       {"field": "value", "type": "quantitative"}
     ]
+  },
+  "config": {
+    "legend": {
+      "offset": -70,
+      "padding": 10
+    }
   }
 }
