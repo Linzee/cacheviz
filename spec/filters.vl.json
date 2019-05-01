@@ -28,9 +28,9 @@
         },
         "color": {
           "condition": {
-            "selection": "terrain"
+            "selection": "type"
           },
-          "value": "magenta"
+          "value": "#ccc"
         }
       }
     },
@@ -66,7 +66,7 @@
           "condition": {
             "selection": "size"
           },
-          "value": "magenta"
+          "value": "#ccc"
         }
       }
     },
@@ -91,9 +91,9 @@
         },
         "color": {
           "condition": {
-            "selection": "terrain"
+            "selection": "difficulty"
           },
-          "value": "magenta"
+          "value": "#ccc"
         }
       }
     },
@@ -120,7 +120,7 @@
           "condition": {
             "selection": "terrain"
           },
-          "value": "magenta"
+          "value": "#ccc"
         }
       }
     }

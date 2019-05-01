@@ -7,7 +7,7 @@ var filter_size = [];
 var filter_difficulty = [];
 var filter_terrain = [];
 var filter_caches = [];
-var filter_time_interval = [];
+var filter_date_range = null;
 
 var view_map;
 var view_timeline;
@@ -33,7 +33,7 @@ var updateDataView = function(view, name, data) {
   view.runAsync();
 }
 
-var updateDataCachces = function() {
+var updateDataMap = function() {
   var caches = data_caches;
   var logs = data_logs;
 
@@ -52,6 +52,10 @@ var updateDataCachces = function() {
 
   logs = logs.where(row => row.type == 'found_it')
 
+  if(filter_date_range != null) {
+    logs = logs.where(row => filter_date_range[0] <= row.date && row.date < filter_date_range[1])
+  }
+
   logs_value = logs.groupBy(row => row.wp).select(group => {
     return {
       wp: group.first().wp,
@@ -68,22 +72,31 @@ var updateDataCachces = function() {
     }
   );
 
-  caches_unselected = caches;
+  caches_arr = caches.toArray();
+
+  updateDataView(view_map, 'source_0', caches_arr);
+}
+
+var updateDataFilter = function() {
+  var caches = data_caches;
+
   if(filter_caches.length) {
     caches = caches.where(row => filter_caches.includes(row.wp))
   }
 
-  caches_unselected_arr = caches_unselected.toArray();
   caches_arr = caches.toArray();
 
-  updateDataView(view_map, 'source_0', caches_arr);
   updateDataView(view_filters, 'source_0', caches_arr);
 }
 
-var updateDataLogs = function() {
+var updateDataTimeline = function() {
   var logs = data_logs;
 
   logs = logs.where(row => row.type == 'found_it');
+
+  if(filter_caches.length) {
+    logs = logs.where(row => filter_caches.includes(row.wp))
+  }
 
   logs_timeline = logs.groupBy(row => row.date).select(group => {
     return {
@@ -121,13 +134,14 @@ init = Promise.all([
     }).then(function(result) {
       view_map = result.view;
 
-      // view_map.addDataListener("cache_store", (name, e) => {
-      //   filter_caches = [];
-      //   e.forEach(ei => {
-      //     filter_caches.push(ei.datum.wp);
-      //   });
-      //   updateDataCachces();
-      // });
+      view_map.addDataListener("cache_store", (name, e) => {
+        filter_caches = [];
+        e.forEach(ei => {
+          filter_caches.push(ei.datum.wp);
+        });
+        updateDataFilter();
+        updateDataTimeline();
+      });
 
       resolve();
     }).catch(reject);
@@ -139,9 +153,14 @@ init = Promise.all([
     }).then(function(result) {
       view_timeline = result.view;
 
-      // view_timeline.addDataListener("range_store", (e) => {
-      //   console.log(e)
-      // })
+      view_timeline.addDataListener("range_store", (name, e) => {
+        if(e.length) {
+          filter_date_range = e[0].values[0];
+        } else {
+          filter_date_range = null;
+        }
+        updateDataMap();
+      })
 
       resolve()
     }).catch(reject);
@@ -172,28 +191,28 @@ init = Promise.all([
         e.forEach(ei => {
           filter_type.push(ei.datum.type);
         });
-        updateDataCachces();
+        updateDataMap();
       });
       view_filters.addDataListener("size_store", (name, e) => {
         filter_size = [];
         e.forEach(ei => {
           filter_size.push(ei.datum.size);
         });
-        updateDataCachces();
+        updateDataMap();
       });
       view_filters.addDataListener("difficulty_store", (name, e) => {
         filter_difficulty = [];
         e.forEach(ei => {
           filter_difficulty.push(ei.datum.difficulty);
         });
-        updateDataCachces();
+        updateDataMap();
       });
       view_filters.addDataListener("terrain_store", (name, e) => {
         filter_terrain = [];
         e.forEach(ei => {
           filter_terrain.push(ei.datum.terrain);
         });
-        updateDataCachces();
+        updateDataMap();
       });
 
       resolve()
@@ -226,7 +245,8 @@ init = Promise.all([
   ])
 })
 .then(() => {
-  updateDataCachces();
-  updateDataLogs();
+  updateDataMap();
+  updateDataFilter();
+  updateDataTimeline();
 })
 .catch(console.error)
