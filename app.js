@@ -121,22 +121,29 @@ init = Promise.all([
       actions: false,
       patch: (spec) => {
 
-        // spec.marks.unshift({
-        //   "type": "image",
-        //   "clip": true,
-        //   "encode": {
-        //     "enter": {
-        //       "url": {"value": "brno.png"}
-        //     },
-        //     "update": {
-        //       "opacity": {"value": 0.2},
-        //       "x": {"scale": "map_x", "value": 0},
-        //       "y": {"scale": "map_y", "value": 1},
-        //       "width": {"value": 1600},
-        //       "height": {"value": 1600}
-        //     }
-        //   }
-        // });
+        spec.marks.forEach(m => {
+          if(m.name == 'cache_brush' || m.name == 'cache_brush_bg') {
+            m.interactive = false;
+          }
+        })
+
+        spec.marks.unshift({
+          "type": "image",
+          "clip": true,
+          "interactive": false,
+          "encode": {
+            "enter": {
+              "url": {"value": "brno.png"}
+            },
+            "update": {
+              "opacity": {"value": 0.3},
+              "x": {"scale": "map_x", "value": 0},
+              "y": {"scale": "map_y", "value": 1},
+              "width": {"signal": "scale(\"map_x\", 1) - scale(\"map_x\", 0)"},
+              "height": {"signal": "scale(\"map_y\", 0) - scale(\"map_y\", 1)"}
+            }
+          }
+        });
 
         // console.log(JSON.stringify(spec));
 
@@ -158,19 +165,6 @@ init = Promise.all([
         }
         updateDataFilterAndTimeline();
       });
-
-      // view_map.addDataListener("grid_store", (name, e) => {
-      //   var xf = e[0].values[0][0];
-      //   var xt = e[0].values[0][1];
-      //   var yf = e[0].values[1][0];
-      //   var yt = e[0].values[1][1];
-      //   var dx = ((1/(xt-xf))*100);
-      //   var dy = ((1/(yt-yf))*100);
-      //   // d3.select("#map svg")
-      //   //   .style("background-position-x", (xf*dx)+"%")
-      //   //   .style("background-position-y", (yf*dy)+"%")
-      //   //   .style("background-size", dx+"% "+dy+"%")
-      // });
 
       resolve();
     }).catch(reject);
