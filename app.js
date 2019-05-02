@@ -6,7 +6,7 @@ var filter_type = [];
 var filter_size = [];
 var filter_difficulty = [];
 var filter_terrain = [];
-var filter_caches = [];
+var filter_caches_range = null;
 var filter_date_range = null;
 
 var view_map;
@@ -53,7 +53,7 @@ var updateDataMap = function() {
   logs = logs.where(row => row.type == 'found_it')
 
   if(filter_date_range != null) {
-    logs = logs.where(row => filter_date_range[0] <= row.date && row.date < filter_date_range[1])
+    logs = logs.where(row => filter_date_range.f <= row.date && row.date < filter_date_range.t)
   }
 
   logs_value = logs.groupBy(row => row.wp).select(group => {
@@ -77,26 +77,24 @@ var updateDataMap = function() {
   updateDataView(view_map, 'source_0', caches_arr);
 }
 
-var updateDataFilter = function() {
+var updateDataFilterAndTimeline = function() {
   var caches = data_caches;
-
-  if(filter_caches.length) {
-    caches = caches.where(row => filter_caches.includes(row.wp))
-  }
-
-  caches_arr = caches.toArray();
-
-  updateDataView(view_filters, 'source_0', caches_arr);
-}
-
-var updateDataTimeline = function() {
   var logs = data_logs;
+
+  if(filter_caches_range != null) {
+    caches = caches.where(row => row.mx >= filter_caches_range.xf && row.mx < filter_caches_range.xt && row.my >= filter_caches_range.yf && row.my < filter_caches_range.yt);
+  }
 
   logs = logs.where(row => row.type == 'found_it');
 
-  if(filter_caches.length) {
-    logs = logs.where(row => filter_caches.includes(row.wp))
-  }
+  logs = logs.join(
+    caches,
+    leftRow => leftRow.wp,
+    rightRow => rightRow.wp,
+    (leftRow, rightRow) => {
+      return leftRow; // using join just to filter if caches are displayed, return only log
+    }
+  );
 
   logs_timeline = logs.groupBy(row => row.date).select(group => {
     return {
@@ -105,8 +103,10 @@ var updateDataTimeline = function() {
     };
   }).inflate();
 
+  caches_arr = caches.toArray();
   logs_timeline_arr = logs_timeline.toArray();
 
+  updateDataView(view_filters, 'source_0', caches_arr);
   updateDataView(view_timeline, 'source_0', logs_timeline_arr);
 }
 
@@ -120,28 +120,57 @@ init = Promise.all([
       renderer: "svg",
       actions: false,
       patch: (spec) => {
-        spec.signals.forEach(s => {
-          if(s.name == 'cache_tuple') {
-            s.on.forEach(o => {
-              if(o.events[0].type == 'click') {
-                o.update = o.update.replace("? {unit", "? {datum: datum, unit")
-              }
-            })
-          }
-        })
-        return spec
+
+        // spec.marks.unshift({
+        //   "type": "image",
+        //   "clip": true,
+        //   "encode": {
+        //     "enter": {
+        //       "url": {"value": "brno.png"}
+        //     },
+        //     "update": {
+        //       "opacity": {"value": 0.2},
+        //       "x": {"scale": "map_x", "value": 0},
+        //       "y": {"scale": "map_y", "value": 1},
+        //       "width": {"value": 1600},
+        //       "height": {"value": 1600}
+        //     }
+        //   }
+        // });
+
+        // console.log(JSON.stringify(spec));
+
+        return spec;
       }
     }).then(function(result) {
       view_map = result.view;
 
       view_map.addDataListener("cache_store", (name, e) => {
-        filter_caches = [];
-        e.forEach(ei => {
-          filter_caches.push(ei.datum.wp);
-        });
-        updateDataFilter();
-        updateDataTimeline();
+        if(e.length) {
+          filter_caches_range = {
+            xf: e[0].values[0][0],
+            xt: e[0].values[0][1],
+            yf: e[0].values[1][1],
+            yt: e[0].values[1][0]
+          }
+        } else {
+          filter_caches_range = null;
+        }
+        updateDataFilterAndTimeline();
       });
+
+      // view_map.addDataListener("grid_store", (name, e) => {
+      //   var xf = e[0].values[0][0];
+      //   var xt = e[0].values[0][1];
+      //   var yf = e[0].values[1][0];
+      //   var yt = e[0].values[1][1];
+      //   var dx = ((1/(xt-xf))*100);
+      //   var dy = ((1/(yt-yf))*100);
+      //   // d3.select("#map svg")
+      //   //   .style("background-position-x", (xf*dx)+"%")
+      //   //   .style("background-position-y", (yf*dy)+"%")
+      //   //   .style("background-size", dx+"% "+dy+"%")
+      // });
 
       resolve();
     }).catch(reject);
@@ -155,7 +184,10 @@ init = Promise.all([
 
       view_timeline.addDataListener("range_store", (name, e) => {
         if(e.length) {
-          filter_date_range = e[0].values[0];
+          filter_date_range = {
+            f: e[0].values[0][0],
+            t: e[0].values[0][1]
+          }
         } else {
           filter_date_range = null;
         }
@@ -170,6 +202,8 @@ init = Promise.all([
       renderer: "svg",
       actions: false,
       patch: (spec) => {
+
+        // Add whole datum into selection stored data, used to extract parameters like type, size, difficulty, terrain
         spec.marks.forEach(m => {
           m.signals.forEach(s => {
             if(s.name == 'type_tuple' || s.name == 'size_tuple' || s.name == 'difficulty_tuple' || s.name == 'terrain_tuple') {
@@ -181,6 +215,7 @@ init = Promise.all([
             }
           })
         })
+
         return spec
       }
     }).then(function(result) {
@@ -225,8 +260,8 @@ init = Promise.all([
       return new Promise((resolve, reject) => {
         data_caches = new dataForge.DataFrame(raw)
           .transformSeries({
-            x: x => parseFloat(x),
-            y: y => parseFloat(y),
+            mx: mx => parseFloat(mx),
+            my: my => parseFloat(my),
             // attributes: a => JSON.parse(a)
           })
         return resolve();
@@ -246,8 +281,7 @@ init = Promise.all([
 })
 .then(() => {
   updateDataMap();
-  updateDataFilter();
-  updateDataTimeline();
+  updateDataFilterAndTimeline();
   d3.select("#loading").style("display", "none");
 })
 .catch(console.error)

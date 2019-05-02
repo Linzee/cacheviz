@@ -1,4 +1,4 @@
-wp,name,location,type,state,size,difficulty,terrain,favorites,hidden,author,attributes,x,y
+wp,name,location,type,state,size,difficulty,terrain,favorites,hidden,author,attributes,mx,my
 GC803B6,Moravské Náměstí,"49 11m 54.312s N, 16 36m 35.712s E",multicache,True,micro,3.5,1.0,3,2018-11-09,nudavbrne,"{'wheelchair': True, 'winter': True, 'available': True, 'touristok': True, 'public': True, 'onehour': True, 'stealth': True, 'hike_short': True, 'bicycles': True}",0.49209999999999693,0.5158709677419304
 GC84RA1,Kačerský pubquiz 2,"49 11m 56.652s N, 16 36m 44.46s E",event,True,other,1.0,1.5,0,2019-04-10,Etigo,"{'food': True, 'teamwork': True, 'restrooms': True, 'water': True, 'public': True, 'parking': True, 'kids': True, 'fee': True}",0.4953499999999983,0.5237096774193509
 GCT686,Bronzmukl,"49 11m 59.1s N, 16 36m 32.94s E",traditional,True,micro,1.5,1.5,7,2006-01-27,seatice (adoptováno od kapitanR),"{'dogs': True, 'available': True, 'night': True, 'public': True, 'bicycles': True, 'stealth': True, 'firstaid': True}",0.4987500000000118,0.5133870967741909
