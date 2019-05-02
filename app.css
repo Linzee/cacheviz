@@ -68,10 +68,6 @@ table {
   flex-flow: column nowrap;
 }
 
-#container_left #map svg {
-	/* background-image: url("brno.svg"); */
-}
-
 #container_right {
   flex: 1 1 auto;
   display: flex;

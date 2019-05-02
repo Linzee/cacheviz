@@ -145,8 +145,6 @@ init = Promise.all([
           }
         });
 
-        // console.log(JSON.stringify(spec));
-
         return spec;
       }
     }).then(function(result) {
