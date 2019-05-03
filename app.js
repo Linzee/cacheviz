@@ -170,7 +170,7 @@ init = Promise.all([
   new Promise((resolve, reject) => {
     vegaEmbed("#timeline", "spec/timeline.vl.json", {
       renderer: "svg",
-      actions: false
+      actions: false,
     }).then(function(result) {
       view_timeline = result.view;
 
