@@ -114,138 +114,148 @@ var logDateGroup = function(date) {
   return date.getFullYear()+"-"+(date.getMonth()+1)
 }
 
-init = Promise.all([
-  new Promise((resolve, reject) => {
-    vegaEmbed("#map", "spec/map.vl.json", {
-      renderer: "svg",
-      actions: false,
-      patch: (spec) => {
+init = fetch("app-style.json")
+  .then(response => response.json())
+  .then(styleConfig => {
+    return Promise.all([
+      new Promise((resolve, reject) => {
+        vegaEmbed("#map", "spec/map.vl.json", {
+          renderer: "svg",
+          config: styleConfig,
+          actions: false,
+          loader: {
+            'target': '_blank'
+          },
+          patch: (spec) => {
 
-        spec.marks.forEach(m => {
-          if(m.name == 'cache_brush' || m.name == 'cache_brush_bg') {
-            m.interactive = false;
+            spec.marks.forEach(m => {
+              if(m.name == 'cache_brush' || m.name == 'cache_brush_bg') {
+                m.interactive = false;
+              }
+            })
+
+            spec.marks.unshift({
+              "type": "image",
+              "clip": true,
+              "interactive": false,
+              "encode": {
+                "enter": {
+                  "url": {"value": "brno.png"}
+                },
+                "update": {
+                  "opacity": {"value": 0.3},
+                  "x": {"scale": "map_x", "value": 0},
+                  "y": {"scale": "map_y", "value": 1},
+                  "width": {"signal": "scale(\"map_x\", 1) - scale(\"map_x\", 0)"},
+                  "height": {"signal": "scale(\"map_y\", 0) - scale(\"map_y\", 1)"}
+                }
+              }
+            });
+
+            return spec;
           }
-        })
+        }).then(function(result) {
+          view_map = result.view;
 
-        spec.marks.unshift({
-          "type": "image",
-          "clip": true,
-          "interactive": false,
-          "encode": {
-            "enter": {
-              "url": {"value": "brno.png"}
-            },
-            "update": {
-              "opacity": {"value": 0.3},
-              "x": {"scale": "map_x", "value": 0},
-              "y": {"scale": "map_y", "value": 1},
-              "width": {"signal": "scale(\"map_x\", 1) - scale(\"map_x\", 0)"},
-              "height": {"signal": "scale(\"map_y\", 0) - scale(\"map_y\", 1)"}
+          view_map.addDataListener("cache_store", (name, e) => {
+            if(e.length) {
+              filter_caches_range = {
+                xf: e[0].values[0][0],
+                xt: e[0].values[0][1],
+                yf: e[0].values[1][1],
+                yt: e[0].values[1][0]
+              }
+            } else {
+              filter_caches_range = null;
             }
-          }
-        });
+            updateDataFilterAndTimeline();
+          });
 
-        return spec;
-      }
-    }).then(function(result) {
-      view_map = result.view;
+          resolve();
+        }).catch(reject);
+      }),
+      new Promise((resolve, reject) => {
+        vegaEmbed("#timeline", "spec/timeline.vl.json", {
+          renderer: "svg",
+          config: styleConfig,
+          actions: false,
+        }).then(function(result) {
+          view_timeline = result.view;
 
-      view_map.addDataListener("cache_store", (name, e) => {
-        if(e.length) {
-          filter_caches_range = {
-            xf: e[0].values[0][0],
-            xt: e[0].values[0][1],
-            yf: e[0].values[1][1],
-            yt: e[0].values[1][0]
-          }
-        } else {
-          filter_caches_range = null;
-        }
-        updateDataFilterAndTimeline();
-      });
+          view_timeline.addDataListener("range_store", (name, e) => {
+            if(e.length) {
+              filter_date_range = {
+                f: e[0].values[0][0],
+                t: e[0].values[0][1]
+              }
+            } else {
+              filter_date_range = null;
+            }
+            updateDataMap();
+          })
 
-      resolve();
-    }).catch(reject);
-  }),
-  new Promise((resolve, reject) => {
-    vegaEmbed("#timeline", "spec/timeline.vl.json", {
-      renderer: "svg",
-      actions: false,
-    }).then(function(result) {
-      view_timeline = result.view;
+          resolve()
+        }).catch(reject);
+      }),
+      new Promise((resolve, reject) => {
+        vegaEmbed("#filters", "spec/filters.vl.json", {
+          renderer: "svg",
+          config: styleConfig,
+          actions: false,
+          patch: (spec) => {
 
-      view_timeline.addDataListener("range_store", (name, e) => {
-        if(e.length) {
-          filter_date_range = {
-            f: e[0].values[0][0],
-            t: e[0].values[0][1]
-          }
-        } else {
-          filter_date_range = null;
-        }
-        updateDataMap();
-      })
-
-      resolve()
-    }).catch(reject);
-  }),
-  new Promise((resolve, reject) => {
-    vegaEmbed("#filters", "spec/filters.vl.json", {
-      renderer: "svg",
-      actions: false,
-      patch: (spec) => {
-
-        // Add whole datum into selection stored data, used to extract parameters like type, size, difficulty, terrain
-        spec.marks.forEach(m => {
-          m.signals.forEach(s => {
-            if(s.name == 'type_tuple' || s.name == 'size_tuple' || s.name == 'difficulty_tuple' || s.name == 'terrain_tuple') {
-              s.on.forEach(o => {
-                if(o.events[0].type == 'click') {
-                  o.update = o.update.replace("? {unit", "? {datum: datum, unit")
+            // Add whole datum into selection stored data, used to extract parameters like type, size, difficulty, terrain
+            spec.marks.forEach(m => {
+              m.signals.forEach(s => {
+                if(s.name == 'type_tuple' || s.name == 'size_tuple' || s.name == 'difficulty_tuple' || s.name == 'terrain_tuple') {
+                  s.on.forEach(o => {
+                    if(o.events[0].type == 'click') {
+                      o.update = o.update.replace("? {unit", "? {datum: datum, unit")
+                    }
+                  })
                 }
               })
-            }
-          })
-        })
+            })
 
-        return spec
-      }
-    }).then(function(result) {
-      view_filters = result.view;
+            return spec
+          }
+        }).then(function(result) {
+          view_filters = result.view;
 
-      view_filters.addDataListener("type_store", (name, e) => {
-        filter_type = [];
-        e.forEach(ei => {
-          filter_type.push(ei.datum.type);
-        });
-        updateDataMap();
-      });
-      view_filters.addDataListener("size_store", (name, e) => {
-        filter_size = [];
-        e.forEach(ei => {
-          filter_size.push(ei.datum.size);
-        });
-        updateDataMap();
-      });
-      view_filters.addDataListener("difficulty_store", (name, e) => {
-        filter_difficulty = [];
-        e.forEach(ei => {
-          filter_difficulty.push(ei.datum.difficulty);
-        });
-        updateDataMap();
-      });
-      view_filters.addDataListener("terrain_store", (name, e) => {
-        filter_terrain = [];
-        e.forEach(ei => {
-          filter_terrain.push(ei.datum.terrain);
-        });
-        updateDataMap();
-      });
+          view_filters.addDataListener("type_store", (name, e) => {
+            filter_type = [];
+            e.forEach(ei => {
+              filter_type.push(ei.datum.type);
+            });
+            updateDataMap();
+          });
+          view_filters.addDataListener("size_store", (name, e) => {
+            filter_size = [];
+            e.forEach(ei => {
+              filter_size.push(ei.datum.size);
+            });
+            updateDataMap();
+          });
+          view_filters.addDataListener("difficulty_store", (name, e) => {
+            filter_difficulty = [];
+            e.forEach(ei => {
+              filter_difficulty.push(ei.datum.difficulty);
+            });
+            updateDataMap();
+          });
+          view_filters.addDataListener("terrain_store", (name, e) => {
+            filter_terrain = [];
+            e.forEach(ei => {
+              filter_terrain.push(ei.datum.terrain);
+            });
+            updateDataMap();
+          });
 
-      resolve()
-    }).catch(reject);
+          resolve()
+        }).catch(reject);
+      })
+    ])
   })
-])
 .then(() => {
   return Promise.all([
     d3.csv("caches.csv").then((raw) => {

@@ -5,9 +5,15 @@
   "data": {
     "values": []
   },
-  "width": 800,
-  "height": 100,
+  "width": 840,
+  "height": 110,
   "bounds": "full",
+  "padding": {
+    "left": 5,
+    "top": 5,
+    "right": 5,
+    "bottom": 25
+  },
   "selection": {
     "range": {
       "type": "interval",
@@ -23,15 +29,16 @@
       "axis": {
         "domain": false,
         "format": "%Y",
-        "tickSize": 0
+        "tickSize": 0,
+        "title": "Found it logs per month"
       }
     },
     "y": {
       "aggregate": "sum",
       "field": "value",
       "type": "quantitative",
-      "axis": null,
-      "stack": "center"
+      "stack": "center",
+      "axis": null
     }
   }
 }

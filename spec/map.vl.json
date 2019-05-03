@@ -5,9 +5,13 @@
   "data": {
     "values": []
   },
-  "width": 800,
-  "height": 800,
+  "transform": [{
+    "calculate": "'https://www.geocaching.com/geocache/' + datum.wp", "as": "url"
+  }],
+  "width": 840,
+  "height": 840,
   "bounds": "full",
+  "padding": 5,
   "selection": {
     "cache": {
       "type": "interval",
@@ -28,6 +32,9 @@
     "filled": true
   },
   "encoding": {
+    "opacity": {
+      "value": 0.9
+    },
     "x": {
       "field": "mx",
       "type": "quantitative",
@@ -47,6 +54,10 @@
         "type": "quantitative",
         "scale": {
           "scheme": "plasma"
+        },
+        "legend": {
+          "title": "Found it logs",
+          "titleAlign": "center"
         }
       },
       "value": "#ccc"
@@ -55,11 +66,15 @@
       {"field": "name", "type": "ordinal"},
       {"field": "wp", "type": "ordinal"},
       {"field": "value", "type": "quantitative"}
-    ]
+    ],
+    "href": {
+      "field": "url",
+      "type": "nominal"
+    }
   },
   "config": {
     "legend": {
-      "offset": -70,
+      "offset": -120,
       "padding": 10
     }
   }

@@ -2,15 +2,20 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "name": "filters",
   "description": "CacheViz filters",
+  "padding": {
+    "left": 35,
+    "top": 5,
+    "right": 5,
+    "bottom": 5
+  },
   "data": {
     "values": []
   },
-  "width": 400,
-  "height": 800,
-  "bounds": "full",
-  "vconcat": [
+  "columns": 1,
+  "concat": [
     {
       "width": 400,
+      "height": 200,
       "bounds": "full",
       "mark": "bar",
       "selection": {
@@ -22,11 +27,19 @@
       "encoding": {
         "x": {
           "field": "type",
-          "type": "ordinal"
+          "type": "ordinal",
+          "axis": {
+            "labelAlign": "left",
+            "labelPadding": -15,
+            "title": "Type"
+          }
         },
         "y": {
           "aggregate": "count",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {
+            "title": false
+          }
         },
         "color": {
           "condition": {
@@ -38,6 +51,7 @@
     },
     {
       "width": 400,
+      "height": 200,
       "bounds": "full",
       "mark": "bar",
       "selection": {
@@ -58,11 +72,19 @@
             "virtual",
             "other",
             "not_chosen"
-          ]
+          ],
+          "axis": {
+            "labelAlign": "left",
+            "labelPadding": -15,
+            "title": "Size"
+          }
         },
         "y": {
           "aggregate": "count",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {
+            "title": false
+          }
         },
         "color": {
           "condition": {
@@ -74,6 +96,7 @@
     },
     {
       "width": 400,
+      "height": 200,
       "bounds": "full",
       "mark": "bar",
       "selection": {
@@ -85,11 +108,19 @@
       "encoding": {
         "x": {
           "field": "difficulty",
-          "type": "ordinal"
+          "type": "ordinal",
+          "axis": {
+            "labelAlign": "left",
+            "labelPadding": -15,
+            "title": "Difficulty"
+          }
         },
         "y": {
           "aggregate": "count",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {
+            "title": false
+          }
         },
         "color": {
           "condition": {
@@ -101,6 +132,7 @@
     },
     {
       "width": 400,
+      "height": 200,
       "bounds": "full",
       "mark": "bar",
       "selection": {
@@ -112,11 +144,19 @@
       "encoding": {
         "x": {
           "field": "terrain",
-          "type": "ordinal"
+          "type": "ordinal",
+          "axis": {
+            "labelAlign": "left",
+            "labelPadding": -15,
+            "title": "Terrain"
+          }
         },
         "y": {
           "aggregate": "count",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {
+            "title": false
+          }
         },
         "color": {
           "condition": {

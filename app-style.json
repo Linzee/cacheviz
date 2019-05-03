@@ -1,0 +1,114 @@
+{
+  "arc": {
+    "fill": "#02874d"
+  },
+  "area": { "fill": "#02874d" },
+  "axisBand": {
+    "grid": false
+  },
+  "axisBottom": {
+    "domain": false,
+    "domainColor": "#333",
+    "domainWidth": 3,
+    "grid": true,
+    "gridColor": "#cbcbcb",
+    "gridWidth": 1,
+    "labelColor": "#333",
+    "labelFont": "Noto Sans",
+    "labelFontSize": 14,
+    "tickColor": "#cbcbcb",
+    "tickSize": 5,
+    "titleFont": "Noto Sans",
+    "titleFontSize": 14,
+    "titlePadding": 10
+  },
+  "axisLeft": {
+    "domainColor": "#cbcbcb",
+    "domainWidth": 1,
+    "grid": true,
+    "gridColor": "#cbcbcb",
+    "gridWidth": 1,
+    "labelColor": "#333",
+    "labelFont": "Noto Sans",
+    "labelFontSize": 14,
+    "tickColor": "#cbcbcb",
+    "tickSize": 5,
+    "ticks": true,
+    "titleFont": "Noto Sans",
+    "titleFontSize": 14,
+    "titlePadding": 10
+  },
+  "axisRight": {
+    "domainColor": "#333",
+    "domainWidth": 1,
+    "grid": true,
+    "gridColor": "#cbcbcb",
+    "gridWidth": 1,
+    "labelColor": "#333",
+    "labelFont": "Noto Sans",
+    "labelFontSize": 14,
+    "tickColor": "#cbcbcb",
+    "tickSize": 5,
+    "ticks": true,
+    "titleFont": "Noto Sans",
+    "titleFontSize": 14,
+    "titlePadding": 10
+  },
+  "axisTop": {
+    "domain": false,
+    "domainColor": "#333",
+    "domainWidth": 3,
+    "grid": true,
+    "gridColor": "#cbcbcb",
+    "gridWidth": 1,
+    "labelColor": "#333",
+    "labelFont": "Noto Sans",
+    "labelFontSize": 14,
+    "tickColor": "#cbcbcb",
+    "tickSize": 5,
+    "titleFont": "Noto Sans",
+    "titleFontSize": 14,
+    "titlePadding": 10
+  },
+  "background": "#fff",
+  "group": {
+    "fill": "#fff"
+  },
+  "legend": {
+    "labelColor": "#333",
+    "labelFont": "Noto Sans",
+    "labelFontSize": 11,
+    "padding": 1,
+    "symbolSize": 30,
+    "symbolType": "square",
+    "titleColor": "#333",
+    "titleFont": "Noto Sans",
+    "titleFontSize": 14,
+    "titlePadding": 10
+  },
+  "line": {
+    "stroke": "#02874d",
+    "strokeWidth": 2
+  },
+  "path": { "stroke": "#02874d", "strokeWidth": 0.5 },
+  "rect": { "fill": "#02874d" },
+  "symbol": {
+    "filled": true,
+    "shape": "circle"
+  },
+  "shape": { "stroke": "#02874d" },
+  "style": {
+    "bar": {
+      "binSpacing": 2,
+      "fill": "#02874d",
+      "stroke": null
+    }
+  },
+  "title": {
+    "anchor": "start",
+    "font": "Noto Sans",
+    "fontSize": 24,
+    "fontWeight": 600,
+    "offset": 20
+  }
+}
