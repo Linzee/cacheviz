@@ -2,80 +2,137 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "name": "map",
   "description": "CacheViz map",
-  "data": {
-    "values": []
-  },
-  "transform": [{
-    "calculate": "'https://www.geocaching.com/geocache/' + datum.wp", "as": "url"
-  }],
   "width": 840,
   "height": 840,
   "bounds": "full",
   "padding": 5,
-  "selection": {
-    "cache": {
-      "type": "interval",
-      "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
-      "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
-    },
-    "grid": {
-      "type": "interval",
-      "bind": "scales",
-      "zoom": "wheel![event.shiftKey]",
-      "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-      "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
-    }
-  },
-  "mark": {
-    "type": "point",
-    "size": 50,
-    "filled": true
-  },
-  "encoding": {
-    "opacity": {
-      "value": 0.9
-    },
-    "x": {
-      "field": "mx",
-      "type": "quantitative",
-      "scale": {"domain": [0.25,0.75]},
-      "axis": null
-    },
-    "y": {
-      "field": "my",
-      "type": "quantitative",
-      "scale": {"domain": [0.25,0.75]},
-      "axis": null
-    },
-    "color": {
-      "condition": {
-        "selection": "cache",
-        "field": "value",
-        "type": "quantitative",
-        "scale": {
-          "scheme": "plasma"
+  "layer": [
+    {
+      "name": "map_heatmap",
+      "data": {
+        "values": [
+          {"mx": 0.0, "my": 0.0, "mx2": 0.01, "my2": 0.01, "caches": 0, "value": 0}
+        ]
+      },
+      "mark": {
+        "type": "rect"
+      },
+      "encoding": {
+        "x": {
+          "field": "mx",
+          "type": "quantitative",
+          "scale": {"domain": [0.25,0.75]},
+          "axis": null
         },
-        "legend": {
-          "title": "Found it logs",
-          "titleAlign": "center"
+        "y": {
+          "field": "my",
+          "type": "quantitative",
+          "scale": {"domain": [0.25,0.75]},
+          "axis": null
+        },
+        "x2": {
+          "field": "mx2",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "my2",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {
+            "scheme": "plasma"
+          }
+        },
+        "opacity": {
+          "field": "value",
+          "type": "quantitative",
+          "legend": false
+        },
+        "tooltip": [
+          {"field": "caches", "type": "quantitative", "title": "Caches"},
+          {"field": "value", "type": "quantitative", "title": "Logs"}
+        ]
+      }
+    },
+    {
+      "name": "map_events",
+      "data": {
+        "values": [
+          {"mx": 0.0, "my": 0.0, "wp": "", "name": "", "value": 0}
+        ]
+      },
+      "transform": [{
+        "calculate": "'https://www.geocaching.com/geocache/' + datum.wp", "as": "url"
+      }],
+      "selection": {
+        "cache": {
+          "type": "interval",
+          "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+          "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+          "resolve": "global"
+        },
+        "grid": {
+          "type": "interval",
+          "bind": "scales",
+          "zoom": "wheel![event.shiftKey]",
+          "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+          "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
         }
       },
-      "value": "#ccc"
-    },
-    "tooltip": [
-      {"field": "name", "type": "ordinal"},
-      {"field": "wp", "type": "ordinal"},
-      {"field": "value", "type": "quantitative"}
-    ],
-    "href": {
-      "field": "url",
-      "type": "nominal"
+      "mark": {
+        "type": "point",
+        "size": 50,
+        "filled": true
+      },
+      "encoding": {
+        "x": {
+          "field": "mx",
+          "type": "quantitative",
+          "scale": {"domain": [0.25,0.75]},
+          "axis": null
+        },
+        "y": {
+          "field": "my",
+          "type": "quantitative",
+          "scale": {"domain": [0.25,0.75]},
+          "axis": null
+        },
+        "color": {
+          "condition": {
+            "selection": "cache",
+            "field": "value",
+            "type": "quantitative",
+            "scale": {
+              "scheme": "plasma"
+            },
+            "legend": {
+              "title": "Found it logs",
+              "titleAlign": "center"
+            }
+          },
+          "value": "#ccc"
+        },
+        "opacity": {
+          "value": 0.9
+        },
+        "tooltip": [
+          {"field": "name", "type": "ordinal", "title": "Name"},
+          {"field": "wp", "type": "ordinal", "title": "Code"},
+          {"field": "value", "type": "quantitative", "title": "Logs"}
+        ],
+        "href": {
+          "field": "url",
+          "type": "nominal"
+        }
+      },
+      "config": {
+        "legend": {
+          "offset": -120,
+          "padding": 10
+        }
+      }
     }
-  },
-  "config": {
-    "legend": {
-      "offset": -120,
-      "padding": 10
-    }
-  }
+  ]
 }

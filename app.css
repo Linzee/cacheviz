@@ -73,12 +73,23 @@ table {
   flex-flow: column nowrap;
 }
 
+header {
+	background: #02874d;
+	padding: 0.3em 0.5em;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+header div {
+	margin: 0 1em;
+	color: rgba(255,255,255,.8);
+	font-family: 'Noto Sans', sans-serif;
+}
+
 h1 {
 	font-size: 1.6rem;
-	padding: 0.2em 0.3em;
 	color: white;
 	font-family: 'Noto Sans', sans-serif;
-	background: #02874d;
 }
 
 h1 span {

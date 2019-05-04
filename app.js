@@ -9,6 +9,8 @@ var filter_terrain = [];
 var filter_caches_range = null;
 var filter_date_range = null;
 
+var heatmap_size = 40;
+
 var view_map;
 var view_timeline;
 var view_filters;
@@ -72,9 +74,32 @@ var updateDataMap = function() {
     }
   );
 
-  caches_arr = caches.toArray();
+  caches_arr = [];
+  heatmap_arr = [];
 
-  updateDataView(view_map, 'source_0', caches_arr);
+  if(d3.select("#showCaches").property("checked")) {
+    caches_arr = caches.toArray();
+  }
+
+  if(d3.select("#showHeatmap").property("checked")) {
+    heatmap = caches.groupBy(row => Math.round(row.mx * heatmap_size)+"-"+Math.round(row.my * heatmap_size)).select(group => {
+      var mx = Math.round(group.first().mx * heatmap_size) / heatmap_size;
+      var my = Math.round(group.first().my * heatmap_size) / heatmap_size;
+      return {
+        mx: mx,
+        my: my,
+        mx2: mx + 1/heatmap_size,
+        my2: my + 1/heatmap_size,
+        caches: group.count(),
+        value: group.deflate(row => row.value).sum(),
+      };
+    }).inflate();
+
+    heatmap_arr = heatmap.toArray();
+  }
+
+  updateDataView(view_map, 'source_0', heatmap_arr);
+  updateDataView(view_map, 'source_1', caches_arr);
 }
 
 var updateDataFilterAndTimeline = function() {
@@ -284,6 +309,10 @@ init = fetch("app-style.json")
 .then(() => {
   updateDataMap();
   updateDataFilterAndTimeline();
+
   d3.select("#loading").style("display", "none");
+
+  d3.select("#showCaches").on("change", updateDataMap);
+  d3.select("#showHeatmap").on("change", updateDataMap);
 })
 .catch(console.error)
