@@ -86,6 +86,16 @@ header div {
 	font-family: 'Noto Sans', sans-serif;
 }
 
+header div span {
+	display: inline-block;
+}
+
+header div span.keyboard {
+	border: 1px solid rgba(255,255,255,.8);
+	border-radius: 5px;
+	padding: 3px;
+}
+
 h1 {
 	font-size: 1.6rem;
 	color: white;

@@ -165,7 +165,7 @@ init = fetch("app-style.json")
               "interactive": false,
               "encode": {
                 "enter": {
-                  "url": {"value": "brno.png"}
+                  "url": {"value": "images/brno.png"}
                 },
                 "update": {
                   "opacity": {"value": 0.3},
