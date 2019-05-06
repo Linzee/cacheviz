@@ -10,7 +10,15 @@ Geocaching is a real-world, outdoor treasure hunting game using GPS-enabled devi
 
 ## Inspiration
 
-I fancied idea of visualizing events with time-stamps concerning some local area. I tried to find such source ___ and I choose Geocaching ___ it is accesed quite easily. That's why I choose this data source.
+I fancied idea of visualizing events (described by timestamp, location and some parameters) concerning some local area (Like Czech republic or Brno). I tried to find such source data and in the end I choose Geocaching because it can be quite easily accessed and contains a lot of events.
+
+## Interaction
+
+- Dragging on map selects rectangular area of caches to display in filters and timeline.
+- Use shift-drag to navigate map and shift-scroll to zoom.
+- Dragging on a timeline filters logs range (only caches with some logs in this range are then displayed on map).
+- Clicking on columns of histograms filters caches by their particular type, size, difficulty and terrain. Multiple columns can be selected by shift-clicking.
+- It is possible to display individual caches, heatmap, or both.
 
 ## Data
 
@@ -77,7 +85,7 @@ My visualization consists of three different Vega-lite (high-level specification
 
 https://github.com/data-forge/data-forge-ts/
 
-Data-Forge is data transformation and analysis toolkit. I used it for data filtering, aggregation and joining sources (caches and logs) when user interacts with visualization.
+Data-Forge is data transformation and analysis toolkit. I used it for data filtering, aggregation and joining sources (caches and logs) when user interacts with visualization. It is also used when computing values for heatmap.
 
 ## Problems
 
@@ -85,3 +93,22 @@ Data-Forge is data transformation and analysis toolkit. I used it for data filte
 - Using fields named "x" or "y" breaks Vega's interval selection! There goes hours of trying to find what is wrong :D
 
 ## Critical assessment and future work
+
+### Usefulness of visualization
+
+Currently caches are set up and managed by users of Geocaching. It is not done currently but visualization like this can be useful for cache management. This project can be used for finding most frequented or problematic caches with specific parameters or location.
+
+Another possible extension of this visualization would be views allowing inspection of caches similarity. List of users who found each cache can be extracted and utilized for visualization of similarity.
+
+Visualization is still quite generic, so it can be modified for displaying any logs associated with time and location.
+
+### Vega
+
+Based on my experience with Vega I think it is really useful tool for quick building of simple visualizations. It can handle even interactive views but only on simple "one table" datasets. Some learning of language is required at first, but afterwards allows quick definition and embedding of visualizations. Visual style is fully customizable and can be shared between visualizations. Downside is that debugging of problems really painful - JSON specification does not allow for any debugging.
+
+### Current problems
+
+- Size of views (map, timeline and filters) are fixed and does not adapt to monitor size at all.
+- There are no animations explaining changes in data caused by interaction. (This is limitation of use Vega, it does not support animations.)
+- Interaction and filtering of data can be quite slow on some less powerful devices. This is probably caused by quite large amount of caches and logs and straightforward implementation of working with data, but I did not inspect this further.
+- Heatmap does not correspond to event locations fully, it is shifted a bit.
