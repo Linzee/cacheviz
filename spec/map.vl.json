@@ -42,7 +42,9 @@
           "field": "value",
           "type": "quantitative",
           "scale": {
-            "scheme": "plasma"
+            "scheme": "orangered",
+            "zero": true,
+            "nice": true
           }
         },
         "opacity": {
@@ -83,7 +85,7 @@
       },
       "mark": {
         "type": "point",
-        "size": 50,
+        "size": 72,
         "filled": true
       },
       "encoding": {
@@ -105,7 +107,9 @@
             "field": "value",
             "type": "quantitative",
             "scale": {
-              "scheme": "plasma"
+              "scheme": "orangered",
+              "zero": true,
+              "nice": true
             },
             "legend": {
               "title": "Found it logs",
@@ -125,12 +129,6 @@
         "href": {
           "field": "url",
           "type": "nominal"
-        }
-      },
-      "config": {
-        "legend": {
-          "offset": -120,
-          "padding": 10
         }
       }
     }

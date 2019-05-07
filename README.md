@@ -81,6 +81,8 @@ Vega is visualization grammar, a declarative language for creating, saving, and 
 
 My visualization consists of three different Vega-lite (high-level specification compiled into Vega language) plots - map, timeline and filters. Vega-lite language can be greatly utilized to quickly build visualization of data. But it is not intended for complex interactions, therefore I choose to implement data filtering and aggregation in JavaScript using following library.
 
+I choose this library because Kibana allows writing visualizations in Vega and I wanted to learn it for different project.
+
 ### Data-Forge
 
 https://github.com/data-forge/data-forge-ts/

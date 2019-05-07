@@ -1,8 +1,8 @@
 {
   "arc": {
-    "fill": "#02874d"
+    "fill": "#5eb28d"
   },
-  "area": { "fill": "#02874d" },
+  "area": { "fill": "#5eb28d" },
   "axisBand": {
     "grid": false
   },
@@ -87,20 +87,20 @@
     "titlePadding": 10
   },
   "line": {
-    "stroke": "#02874d",
+    "stroke": "#5eb28d",
     "strokeWidth": 2
   },
-  "path": { "stroke": "#02874d", "strokeWidth": 0.5 },
-  "rect": { "fill": "#02874d" },
+  "path": { "stroke": "#5eb28d", "strokeWidth": 0.5 },
+  "rect": { "fill": "#5eb28d" },
   "symbol": {
     "filled": true,
     "shape": "circle"
   },
-  "shape": { "stroke": "#02874d" },
+  "shape": { "stroke": "#5eb28d" },
   "style": {
     "bar": {
       "binSpacing": 2,
-      "fill": "#02874d",
+      "fill": "#5eb28d",
       "stroke": null
     }
   },
