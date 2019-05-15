@@ -139,6 +139,10 @@ var logDateGroup = function(date) {
   return date.getFullYear()+"-"+(date.getMonth()+1)
 }
 
+vega.scheme("myscheme", (v) => {
+  return vega.scheme('redpurple')(0.3 + v * 0.7);
+});
+
 init = fetch("app-style.json")
   .then(response => response.json())
   .then(styleConfig => {

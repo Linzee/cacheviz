@@ -42,7 +42,7 @@
           "field": "value",
           "type": "quantitative",
           "scale": {
-            "scheme": "orangered",
+            "scheme": "myscheme",
             "zero": true,
             "nice": true
           }
@@ -107,7 +107,7 @@
             "field": "value",
             "type": "quantitative",
             "scale": {
-              "scheme": "orangered",
+              "scheme": "myscheme",
               "zero": true,
               "nice": true
             },
@@ -129,6 +129,11 @@
         "href": {
           "field": "url",
           "type": "nominal"
+        },
+        "order": {
+          "field": "value",
+          "sort": "ascending",
+          "type": "quantitative"
         }
       }
     }

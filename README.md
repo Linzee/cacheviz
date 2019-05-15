@@ -2,6 +2,9 @@
 
 Vizualization of geocache caches in Brno region.
 
+Repo: https://github.com/Linzee/cacheviz
+Available on web: http://ienze.me/cacheviz/
+
 ![Screenshot of CacheViz application](images/screen.jpg)
 
 ### Geocaching
@@ -91,7 +94,7 @@ Data-Forge is data transformation and analysis toolkit. I used it for data filte
 
 ## Problems
 
-- I had to repair bug in library pycaching used for collection of data. One type of logs was missing. (I submitted a merge request.)
+- I had to repair bug in library pycaching used for collection of data. One type of logs was missing. (Merge request accepted)
 - Using fields named "x" or "y" breaks Vega's interval selection! There goes hours of trying to find what is wrong :D
 
 ## Critical assessment and future work
